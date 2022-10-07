@@ -1,0 +1,21 @@
+<?php
+namespace App\Http\Controllers\{{ .NameSpace }};
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\StatusRequest;
+use App\Http\Responses\Api\V1\Status;
+
+class {{ .HandlerName }}Controller extends Controller
+{
+    /**
+     * @param \App\Http\Requests\{{ .NameSpace }}\{{ .NameSpace }}Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function status(StatusRequest $request)
+    {
+        $stats = $request->get('status');
+
+        return Status::ok()->response();
+    }
+}
