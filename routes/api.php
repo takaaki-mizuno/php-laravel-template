@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\User\AuthController;
+use App\Http\Controllers\Api\User\IndexController;
+use App\Http\Controllers\Api\User\MeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +19,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
+    'prefix' => 'auth',
+    'namespace' => 'User',
+    'as' => 'user.'
 ], function ($router) {
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'namespace' => 'User',
+    'as' => 'user.'
+], function ($router) {
+    Route::get('/me', [MeController::class, 'me']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'namespace' => 'User',
+    'as' => 'user.'
+], function ($router) {
+    Route::get('status', [IndexController::class, 'status']);
 });
