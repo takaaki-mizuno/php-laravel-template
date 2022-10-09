@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Api\User\Me;
 
 class MeController extends Controller
 {
@@ -17,8 +17,8 @@ class MeController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function me(): JsonResponse
+    public function me(): Me
     {
-        return response()->json(auth()->user());
+        return new Me(auth()->user());
     }
 }

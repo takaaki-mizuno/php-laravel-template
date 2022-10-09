@@ -6,15 +6,14 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\Status as StatusRequest;
-use App\Http\Responses\Api\User\Status as StatusResponse;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Api\User\Status;
 
 class IndexController extends Controller
 {
-    public function status(StatusRequest $request): JsonResponse
+    public function status(StatusRequest $request): Status
     {
         $stats = $request->get('status');
 
-        return StatusResponse::ok()->response();
+        return Status::ok();
     }
 }

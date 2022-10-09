@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Exceptions\Api\User;
 
-use App\Http\Responses\Api\User\Status;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Api\User\Status;
 
 class APIErrorException extends \App\Exceptions\Api\APIErrorException
 {
-    public function getErrorResponse(): JsonResponse
+    public function getErrorResponse(): Status
     {
-        return Status::error($this->errorName, $this->userMessage, $this->extraData)->response();
+        return Status::error($this->errorName, $this->userMessage, $this->extraData);
     }
 
     protected function errorConfig(): array

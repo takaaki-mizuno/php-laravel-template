@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-use App\Http\Responses\Api\User\Status;
+use App\Http\Resources\Api\User\Status;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
@@ -47,8 +47,8 @@ class Handler extends ExceptionHandler
         });
     }
 
-    protected function unauthenticated($request, AuthenticationException $exception)
+    protected function unauthenticated($request, AuthenticationException $exception): Status
     {
-        return Status::error('signInRequired', 'Unauthorized')->response();
+        return Status::error('signInRequired', 'Unauthorized');
     }
 }

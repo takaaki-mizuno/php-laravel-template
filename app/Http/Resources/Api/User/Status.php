@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Responses\Api\User;
+namespace App\Http\Resources\Api\User;
 
+use App\Http\Resources\Resource;
 use Illuminate\Support\Arr;
 
-class Status extends Response
+class Status extends Resource
 {
     protected array $columns = [
         'success' => true,
@@ -27,6 +28,22 @@ class Status extends Response
         'invalidParams',
     ];
 
+    public static function ok($message = '', $extraData = [], $statusCode = 200): static
+    {
+        $static = new static([
+            'success' => true,
+            'type' => Arr::get($extraData, 'type', ''),
+            'title' => Arr::get($extraData, 'title', ''),
+            'status' => (int) Arr::get($extraData, 'status', 0),
+            'errorCode' => 0,
+            'detail' => $message,
+            'invalidParams' => [],
+        ]);
+        $static->withStatus($statusCode);
+
+        return $static;
+    }
+
     public static function error($error, $message, $extraData = []): static
     {
         $error = config('api.errors.'.$error);
@@ -34,27 +51,17 @@ class Status extends Response
             $error = config('api.errors.unknown');
         }
 
-        return new static([
-            'isSuccess' => false,
+        $static = new static([
+            'success' => false,
             'type' => Arr::get($extraData, 'type', ''),
             'title' => Arr::get($extraData, 'title', ''),
             'status' => (int) Arr::get($extraData, 'status', 0),
             'errorCode' => (int) Arr::get($error, 'code'),
             'detail' => empty($message) ? Arr::get($error, 'message', '') : $message,
             'invalidParams' => Arr::get($extraData, 'invalidParams', []),
-        ], Arr::get($error, 'statusCode', 400));
-    }
+        ]);
+        $static->withStatus(Arr::get($error, 'statusCode', 400));
 
-    public static function ok($message = '', $extraData = [], $statusCode = 200): static
-    {
-        return new static([
-            'isSuccess' => true,
-            'type' => Arr::get($extraData, 'type', ''),
-            'title' => Arr::get($extraData, 'title', ''),
-            'status' => (int) Arr::get($extraData, 'status', 0),
-            'errorCode' => 0,
-            'detail' => $message,
-            'invalidParams' => [],
-        ], $statusCode);
+        return $static;
     }
 }
