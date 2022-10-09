@@ -31,11 +31,11 @@ class AuthenticatableBase extends Base implements AuthenticatableContract, Autho
     use MustVerifyEmail;
 
     /**
-     * @param mixed $password
+     * @param ?string $password
      *
      * @throws BindingResolutionException
      */
-    public function setPasswordAttribute($password): void
+    public function setPasswordAttribute(?string $password): void
     {
         if (empty($password)) {
             $this->attributes['password'] = '';
